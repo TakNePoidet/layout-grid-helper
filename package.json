@@ -1,0 +1,27 @@
+{
+  "name": "grid-helper",
+  "version": "1.0.0",
+  "description": "Сетка для вертски ",
+  "author": "TakNePoidet",
+  "license": "MIT",
+  "main": "dist/grid-helper.umd.js",
+  "module": "dist/grid-helper.es5.js",
+  "typings": "dist/grid-helper.d.ts",
+  "devDependencies": {
+    "lodash.camelcase": "^4.3.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.33.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "typedoc": "^0.19.2",
+    "typescript": "^4.0.5"
+  },
+  "scripts": {
+    "start": "rollup -c rollup.config.ts -w",
+    "prebuild": "rimraf dist",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src"
+  }
+}

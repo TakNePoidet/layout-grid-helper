@@ -1,28 +1,28 @@
 
-interface GridHelperVariables {
+interface LayoutGridHelperVariables {
 	gutter?: string;
 	sides?: string;
 	columns?: number;
 	container?: string;
 }
 
-interface GridHelperConstructor extends GridHelperVariables {
+interface LayoutGridHelperConstructor extends LayoutGridHelperVariables {
 	className?: string;
 	prefix?: string;
 	mobileFirst?: boolean,
 	color?: string,
-	responsible?: { [key: number]: GridHelperVariables; };
+	responsible?: { [key: number]: LayoutGridHelperVariables; };
 }
-interface GridHelperApi {
-	init(): GridHelperApi;
-	show(): GridHelperApi;
-	hide(): GridHelperApi;
+interface LayoutGridHelperApi {
+	init(): void;
+	show(): void;
+	hide(): void;
 	destroy(): void;
 }
 
 
 
-export default function GridHelper(params: GridHelperConstructor = {}): GridHelperApi {
+export default function LayoutGridHelper(params: LayoutGridHelperConstructor = {}): LayoutGridHelperApi {
 	const color = params.color || 'rgb(255 0 0 / 0.2)';
 	const gutter = params.gutter || '16px';
 	const sides = params.sides || '20px';
@@ -30,32 +30,26 @@ export default function GridHelper(params: GridHelperConstructor = {}): GridHelp
 	const container = params.container || '100%';
 	const prefix = params.prefix || 'gh';
 	const responsible = params.responsible || {};
-	const className = params.className || 'grid-helper';
+	const className = params.className || 'layout-grid-helper';
 	const mobileFirst = typeof params.mobileFirst !== 'undefined' ? params.mobileFirst : true;
 	let isShow = false;
-	function createStyleElement(): HTMLStyleElement {
-		const link = document.createElement('style');
-		link.id = `id-grid-helper`;
-		link.innerHTML = initStyleBase();
-		return link;
-	}
-	function initStyleVariables(variables: GridHelperVariables): string {
+
+	function initStyleVariables(variables: LayoutGridHelperVariables): string {
 		let style = ``;
-		for (const key in variables) {
-			if (Object.prototype.hasOwnProperty.call(variables, key)) {
-				// @ts-ignore
-				const value: string | number = variables[key];
+		Object.entries(variables).forEach(([key, value]) => {
+			if (typeof value !== "undefined") {
 				style += `--${prefix}-${key}: ${value};`;
 			}
-		}
+		});
 		return style;
 	}
+
 	function initStyleBase(): string {
 		const initVar = initStyleVariables({
 			gutter,
 			sides,
 			columns,
-			container,
+			container
 		});
 		let style = `
 		.${className}::before {
@@ -95,30 +89,49 @@ export default function GridHelper(params: GridHelperConstructor = {}): GridHelp
 			
 		}`;
 
-		for (const size in responsible) {
-			if (Object.prototype.hasOwnProperty.call(responsible, size)) {
-				const vars = initStyleVariables(responsible[size]);
-				style += `
+
+
+		Object.entries(responsible).forEach(([size, value]) => {
+			const vars = initStyleVariables(value);
+			style += `
 					@media screen and (${mobileFirst ? 'min-width' : 'max-width'}: ${size}px) {
 						.${className}::before {
 							${vars}
 						}
 					}
 				`;
-			}
-		}
+		});
 		return style;
+	}
+
+	function createStyleElement(): HTMLStyleElement {
+		const link = document.createElement('style');
+		link.id = `id-grid-helper`;
+		link.innerHTML = initStyleBase();
+		return link;
+	}
+
+	function show() {
+		isShow = true;
+		document.body.classList.add(className);
+	}
+	function hide() {
+		isShow = false;
+		document.body.classList.remove(className);
 	}
 
 	function keydown({ ctrlKey, code }: KeyboardEvent) {
 		if (ctrlKey === true && code === "KeyM") {
-			isShow ? hide() : show();
+			if (isShow) {
+				hide();
+			} else {
+				show();
+			}
 		}
 	}
 	function init() {
 		document.head.append(createStyleElement());
 		window.addEventListener('keydown', keydown);
-		return api();
 	}
 
 	function destroy() {
@@ -129,17 +142,8 @@ export default function GridHelper(params: GridHelperConstructor = {}): GridHelp
 		}
 
 	}
-	function show() {
-		isShow = true;
-		document.body.classList.add(className);
-		return api();
-	}
-	function hide() {
-		isShow = false;
-		document.body.classList.remove(className);
-		return api();
-	}
-	function api(): GridHelperApi {
+
+	function api(): LayoutGridHelperApi {
 		return {
 			init,
 			show,

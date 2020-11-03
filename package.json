@@ -1,14 +1,35 @@
 {
-  "name": "grid-helper",
+  "name": "layout-grid-helper",
   "version": "1.0.0",
   "description": "Сетка для вертски ",
   "author": "TakNePoidet",
   "license": "MIT",
-  "main": "dist/grid-helper.umd.js",
-  "module": "dist/grid-helper.es5.js",
-  "typings": "dist/grid-helper.d.ts",
+  "main": "dist/layout-grid-helper.umd.js",
+  "module": "dist/layout-grid-helper.es5.js",
+  "typings": "dist/layout-grid-helper.d.ts",
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/TakNePoidet/layout-grid-helper/issues"
+  },
+  "homepage": "https://github.com/TakNePoidet/layout-grid-helper#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TakNePoidet/layout-grid-helper.git"
+  },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.4",
     "lodash.camelcase": "^4.3.0",
+    "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.33.1",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -22,6 +43,8 @@
   "scripts": {
     "start": "rollup -c rollup.config.ts -w",
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src"
+    "build": "cross-env NODE_ENV=production tsc --module commonjs && cross-env NODE_ENV=production rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --fix --ext .ts src"
   }
 }

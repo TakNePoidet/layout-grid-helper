@@ -1,25 +1,26 @@
-# Grid Helper
+# Layout grid helper
 
-Впомогательная сетка для верскии
+Направляющие верстки
 
+![alt text](screenshots.png "Пример работы плагина")
 
 ## Установка
 
 ```bash
-npm install https://github.com/TakNePoidet/grid-helper.git --save-dev
+  npm i layout-grid-helper --save-dev
 ```
 
 или
 
 ```bash
-yarn add -D https://github.com/TakNePoidet/grid-helper.git
+yarn add -D layout-grid-helper
 ```
 
 ## Использование
 ```js
-import GridHelper from 'grid-helper';
+import LayoutGridHelper from 'layout-grid-helper';
 
-const gridHelper = GridHelper({
+const gridHelper = LayoutGridHelper({
   prefix: 'gh',
   sides: '16px',
   gutter: '16px',
@@ -48,7 +49,7 @@ gridHelper.init();
 
 | Имя  | Описание | Значение по умолчанию  |
 | ----- | ------------ | -------- |
-| className | Класс блока сетки | grid-helper |
+| className | Класс блока сетки | layout-grid-helper |
 | prefix | Пруфикс переменных | gh |
 | mobileFirst | Приоритет мобильной версии | true |
 | color | Цвет | rgb(255 0 0 / 0.2) |
@@ -71,3 +72,6 @@ gridHelper.init();
 ```
 CTRL + M - покзать/скрыть сетку 
 ```
+
+## Благодарность
+Библиотека сделана на основе [видео](https://youtu.be/WBrngvT78gw) Вадима Макеева 

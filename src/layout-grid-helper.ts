@@ -71,10 +71,11 @@ export default function LayoutGridHelper(params: LayoutGridHelperConstructor = {
 			border: 0px solid transparent;
 
 			--${prefix}-column-width: calc(
-				((100% - (var(--${prefix}-gutter) * (var(--${prefix}-columns) - 1))) - var(--${prefix}-sides) * 2) / var(--${prefix}-columns)
+				((100% - (var(--${prefix}-gutter) * (var(--${prefix}-columns) - 1))) - var(--${prefix}-sides) * 0) / var(--${prefix}-columns)
 			);
 			
-			margin: 0px var(--${prefix}-sides);
+			/* margin: 0px var(--${prefix}-sides); */ 
+			border-width: 0px  var(--${prefix}-sides);
 			/* 
 				Градиент
 			*/

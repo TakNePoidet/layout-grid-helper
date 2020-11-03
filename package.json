@@ -19,6 +19,7 @@
     "url": "git+https://github.com/TakNePoidet/layout-grid-helper.git"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.3",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
     "cross-env": "^7.0.2",
@@ -32,6 +33,7 @@
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.33.1",
+    "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",

@@ -1,4 +1,3 @@
-
 interface LayoutGridHelperVariables {
 	gutter?: string;
 	sides?: string;
@@ -7,11 +6,12 @@ interface LayoutGridHelperVariables {
 }
 
 interface LayoutGridHelperConstructor extends LayoutGridHelperVariables {
+	root?: HTMLElement | string;
 	className?: string;
 	prefix?: string;
-	mobileFirst?: boolean,
-	color?: string,
-	responsible?: { [key: number]: LayoutGridHelperVariables; };
+	mobileFirst?: boolean;
+	color?: string;
+	responsible?: { [key: number]: LayoutGridHelperVariables };
 }
 interface LayoutGridHelperApi {
 	init(): void;
@@ -20,9 +20,16 @@ interface LayoutGridHelperApi {
 	destroy(): void;
 }
 
+export function layoutGridHelper(params: LayoutGridHelperConstructor = {}): LayoutGridHelperApi {
+	let root: HTMLElement;
 
-
-export default function LayoutGridHelper(params: LayoutGridHelperConstructor = {}): LayoutGridHelperApi {
+	if (!params.root) {
+		root = document.body;
+	} else if (params.root instanceof HTMLElement) {
+		root = params.root;
+	} else {
+		root = document.querySelector(params.root) || document.body;
+	}
 	const color = params.color || 'rgb(255 0 0 / 0.2)';
 	const gutter = params.gutter || '16px';
 	const sides = params.sides || '20px';
@@ -36,8 +43,9 @@ export default function LayoutGridHelper(params: LayoutGridHelperConstructor = {
 
 	function initStyleVariables(variables: LayoutGridHelperVariables): string {
 		let style = ``;
+
 		Object.entries(variables).forEach(([key, value]) => {
-			if (typeof value !== "undefined") {
+			if (typeof value !== 'undefined') {
 				style += `--${prefix}-${key}: ${value};`;
 			}
 		});
@@ -87,26 +95,34 @@ export default function LayoutGridHelper(params: LayoutGridHelperConstructor = {
 				transparent calc(var(--${prefix}-column-width) + var(--${prefix}-gutter))
 			);
 			
-			
 		}`;
 
+		const keysResponsible = Object.keys(responsible)
+			.map(Number)
+			.sort((a: number, b: number) => {
+				if (mobileFirst) {
+					return a > b ? 1 : -1;
+				}
+				return a > b ? -1 : 1;
+			});
 
+		for (const size of keysResponsible) {
+			const vars = initStyleVariables(responsible[size]);
 
-		Object.entries(responsible).forEach(([size, value]) => {
-			const vars = initStyleVariables(value);
 			style += `
-					@media screen and (${mobileFirst ? 'min-width' : 'max-width'}: ${size}px) {
-						.${className}::before {
-							${vars}
+						@media screen and (${mobileFirst ? 'min-width' : 'max-width'}: ${size}px) {
+							.${className}::before {
+								${vars}
+							}
 						}
-					}
-				`;
-		});
+					`;
+		}
 		return style;
 	}
 
 	function createStyleElement(): HTMLStyleElement {
 		const link = document.createElement('style');
+
 		link.id = `id-grid-helper`;
 		link.innerHTML = initStyleBase();
 		return link;
@@ -114,15 +130,15 @@ export default function LayoutGridHelper(params: LayoutGridHelperConstructor = {
 
 	function show() {
 		isShow = true;
-		document.body.classList.add(className);
+		root.classList.add(className);
 	}
 	function hide() {
 		isShow = false;
-		document.body.classList.remove(className);
+		root.classList.remove(className);
 	}
 
 	function keydown({ ctrlKey, code }: KeyboardEvent) {
-		if (ctrlKey === true && code === "KeyM") {
+		if (ctrlKey && code === 'KeyM') {
 			if (isShow) {
 				hide();
 			} else {
@@ -138,10 +154,10 @@ export default function LayoutGridHelper(params: LayoutGridHelperConstructor = {
 	function destroy() {
 		window.removeEventListener('keydown', keydown);
 		const style = document.getElementById(`id-${className}`);
+
 		if (style) {
 			style.parentElement?.removeChild(style);
 		}
-
 	}
 
 	function api(): LayoutGridHelperApi {

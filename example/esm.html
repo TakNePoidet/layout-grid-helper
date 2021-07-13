@@ -6,8 +6,9 @@
 	<title>Title</title>
 </head>
 <body>
-<script src='../dist/index.browser.js'></script>
-<script>
+
+<script type='module'>
+	import layoutGridHelper from '../dist/index.esm.mjs'
 	const gridHelper = layoutGridHelper({
 		prefix: 'gh',
 		sides: '16px',

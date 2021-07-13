@@ -15,6 +15,6 @@
 		"outDir": "./dist",
 		"declarationDir": "."
 	},
-	"include": ["./src/", "test", "example"],
+	"include": ["./src/"],
 	"exclude": ["dist"]
 }

@@ -50,12 +50,12 @@ const gridHelper = LayoutGridHelper({
 | Имя         | Описание                   | Значение по умолчанию                               |
 | ----------- | -------------------------- | --------------------------------------------------- |
 | className   | Класс блока сетки          | layout-grid-helper                                  |
-| prefix      | Пруфикс переменных         | gh                                                  |
+| prefix      | Префикс переменных         | gh                                                  |
 | mobileFirst | Приоритет мобильной версии | true                                                |
 | color       | Цвет                       | rgb(255 0 0 / 0.2)                                  |
 | gutter      | Отступ между колонками     | 16px                                                |
-| sides       | Отсуп от края экрана       | 20px                                                |
-| columns     | Количево колонок           | 4                                                   |
+| sides       | Отступ от края экрана       | 20px                                                |
+| columns     | Количество колонок           | 4                                                   |
 | container   | Ширина контейнера          | 100%                                                |
 | responsible | Медиа запросы              | {[breakpoint]:{gutter?,sides?,columns?,container?}} |
 

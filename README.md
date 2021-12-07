@@ -43,7 +43,6 @@ const gridHelper = LayoutGridHelper({
 		}
 	}
 });
-gridHelper.init();
 ```
 
 ## Опции

@@ -1,54 +1,51 @@
 <!DOCTYPE html>
-<html lang='en'>
-<head>
-	<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-	<meta charset='UTF-8'>
-	<title>Title</title>
-</head>
-<body>
-
-<script type='module'>
-	import layoutGridHelper from '../dist/index.esm.mjs'
-	const gridHelper = layoutGridHelper({
-		prefix: 'gh',
-		sides: '16px',
-		gutter: '16px',
-		columns: 4,
-		mobileFirst: true,
-		responsible: {
-			576: {
-				container: '576px',
-				columns: 6
-			},
-			960: {
-				container: '960px',
-				columns: 10
-			},
-			470: {
-				container: '470px',
-				gutter: '16px',
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+		<meta charset="UTF-8" />
+		<title>Title</title>
+	</head>
+	<body>
+		<script type="module">
+			import layoutGridHelper from '../dist/index.esm.mjs';
+			const gridHelper = layoutGridHelper({
+				// prefix: 'gh',
 				sides: '16px',
-				columns: 4
-			},
-			640: {
-				container: '640px',
-				columns: 6
-			},
-			1300: {
-				container: '1300px',
-				columns: 12,
-				gutter: '20px',
-				sides: '20px'
-			},
-			1690: {
-				container: '1690px',
-				columns: 12
-			}
-		}
-	});
-
-	gridHelper.init()
-	gridHelper.show()
-</script>
-</body>
+				gutter: '16px',
+				columns: 4,
+				mobileFirst: true,
+				responsible: {
+					576: {
+						container: '576px',
+						columns: 6
+					},
+					960: {
+						container: '960px',
+						columns: 10
+					},
+					470: {
+						container: '470px',
+						gutter: '16px',
+						sides: '16px',
+						columns: 4
+					},
+					640: {
+						container: '640px',
+						columns: 6
+					},
+					1300: {
+						container: '1300px',
+						columns: 12,
+						gutter: '20px',
+						sides: '20px'
+					},
+					1690: {
+						container: '1690px',
+						columns: 12
+					}
+				}
+			});
+			gridHelper.show();
+		</script>
+	</body>
 </html>

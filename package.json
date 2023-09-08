@@ -4,9 +4,9 @@
 	"description": "Сетка для верстки",
 	"author": "TakNePoidet",
 	"license": "MIT",
-	"main": "dist/index.js",
-	"module": "dist/index.esm.mjs",
-	"jsdelivr": "dist/index.browser.js",
+	"main": "dist/index.cjs.js",
+	"module": "dist/index.es.js",
+	"jsdelivr": "./dist/index.iife.js",
 	"typings": "dist/index.d.ts",
 	"files": [
 		"dist"
@@ -20,23 +20,17 @@
 		"url": "git+https://github.com/TakNePoidet/layout-grid-helper.git"
 	},
 	"devDependencies": {
-		"@rollup/plugin-typescript": "^8.3.0",
 		"@taknepoidet-config/eslint-config": "^1.8.1",
 		"@taknepoidet-config/prettier": "^1.7.0",
-		"@types/lodash": "^4.14.177",
-		"cross-env": "^7.0.3",
 		"eslint": "^8.4.0",
-		"lodash": "^4.17.21",
 		"prettier": "^2.5.1",
-		"rimraf": "^3.0.2",
-		"rollup": "^2.60.2",
-		"rollup-plugin-sourcemaps": "^0.6.3",
-		"rollup-plugin-terser": "^7.0.2",
-		"typedoc": "^0.22.10"
+		"terser": "^5.19.4",
+		"vite": "^4.4.9",
+		"vite-plugin-dts": "^3.5.3"
 	},
 	"scripts": {
-		"build:dev": "rollup -c rollup.config.js -w",
-		"build": "rimraf dist && cross-env NODE_ENV=production rollup -c rollup.config.js",
+		"dev": "vite build --watch",
+		"build": "vite build",
 		"lint": "eslint --fix ./src",
 		"prettier": "prettier --ignore-unknown --write .",
 		"beautifier": "npm run lint && npm run prettier",

@@ -15,9 +15,9 @@ interface Params extends Options {
 
 interface LayoutGridHelper {
 	isShow: boolean;
-	show(): void;
-	hide(): void;
-	destroy(): void;
+	show: () => void;
+	hide: () => void;
+	destroy: () => void;
 }
 
 export function layoutGridHelper(params: Partial<Params> = {}): LayoutGridHelper {
@@ -119,8 +119,8 @@ export function layoutGridHelper(params: Partial<Params> = {}): LayoutGridHelper
 
 		let columnWidthFormula = `((100% - (var(${variable('gutter')})`;
 
-		columnWidthFormula += `* (var(${variable('columns')}) - 1)))`;
-		columnWidthFormula += `var(${variable('sides')}) * 0) / var(${variable('columns')})`;
+		columnWidthFormula += ` * (var(${variable('columns')}) - 1)))`;
+		columnWidthFormula += ` + var(${variable('sides')}) * 0) / var(${variable('columns')})`;
 
 		return `
 				.${className} {
@@ -172,8 +172,12 @@ export function layoutGridHelper(params: Partial<Params> = {}): LayoutGridHelper
 			get isShow() {
 				return state.show;
 			},
-			show: () => toggle(true),
-			hide: () => toggle(false),
+			show() {
+				toggle(true);
+			},
+			hide() {
+				toggle(false);
+			},
 			destroy
 		};
 	}

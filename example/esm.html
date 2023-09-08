@@ -7,8 +7,8 @@
 	</head>
 	<body>
 		<script type="module">
-			import layoutGridHelper from '../dist/index.es.js';
-			const gridHelper = layoutGridHelper({
+			import LayoutGridHelper from '../dist/index.es.js';
+			const layoutGridHelper = new LayoutGridHelper({
 				// prefix: 'gh',
 				sides: '16px',
 				gutter: '16px',
@@ -45,7 +45,7 @@
 					}
 				}
 			});
-			gridHelper.show();
+			layoutGridHelper.show();
 		</script>
 	</body>
 </html>

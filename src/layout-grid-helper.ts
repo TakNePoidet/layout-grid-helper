@@ -1,3 +1,5 @@
+import { defu } from 'defu';
+
 interface Options {
 	gutter: string;
 	sides: string;
@@ -5,7 +7,7 @@ interface Options {
 	container: string;
 }
 
-interface Params extends Options {
+export interface Params extends Options {
 	className: string;
 	prefix: string;
 	color: string;
@@ -13,61 +15,80 @@ interface Params extends Options {
 	responsible: Record<number, Options>;
 }
 
-interface LayoutGridHelper {
-	isShow: boolean;
+interface Api {
+	active: boolean;
 	show: () => void;
 	hide: () => void;
 	destroy: () => void;
 }
 
-export function layoutGridHelper(params: Partial<Params> = {}): LayoutGridHelper {
-	const root: HTMLElement = document.createElement('div');
-	const styleTag = document.createElement('style');
+export class LayoutGridHelper implements Api {
+	readonly #options: Params;
+	#show: boolean = false;
+	#root = document.createElement('div');
+	#style = document.createElement('style');
+	#keydown: (event: KeyboardEvent) => void;
 
-	const options: Params = {
-		gutter: '16px',
-		sides: '20px',
-		columns: 4,
-		container: '100%',
-		className: 'layout-grid-helper',
-		prefix: 'lgh',
-		color: 'rgb(255 0 0 / 0.2)',
-		mobileFirst: false,
-		responsible: {},
-		...params
-	};
+	constructor(params: Partial<Params> = {}) {
+		this.#options = defu(params, {
+			gutter: '16px',
+			sides: '20px',
+			columns: 4,
+			container: '100%',
+			className: 'layout-grid-helper',
+			prefix: 'lgh',
+			color: 'rgb(255 0 0 / 0.2)',
+			mobileFirst: false,
+			responsible: {}
+		});
 
-	const state = Object.create(Object.prototype, {
-		_show: { value: false, writable: true },
-		show: {
-			get() {
-				return this._show;
-			},
-			set(value: boolean) {
-				this._show = value;
-				root.style.display = value ? 'block' : 'none';
+		this.#root.classList.add(this.#options.className);
+		document.body.append(this.#root);
+		this.#style.innerHTML = this.#render();
+		document.head.append(this.#style);
+		const keydown = ({ ctrlKey, code }: KeyboardEvent) => {
+			if (ctrlKey && code === 'KeyM') {
+				this.toggle();
 			}
-		}
-	});
+		};
 
-	function variable(key: string, value: string | undefined = undefined) {
-		const { prefix } = options;
+		this.#keydown = keydown.bind(this);
+		window.addEventListener('keydown', this.#keydown);
+	}
 
+	get active() {
+		return this.#show;
+	}
+
+	set active(value) {
+		this.#show = value;
+		this.#root.style.display = value ? 'block' : 'none';
+	}
+
+	toggle(value?: boolean) {
+		this.active = value ?? !this.active;
+	}
+
+	hide(): void {
+		this.toggle(false);
+	}
+
+	show(): void {
+		this.toggle(true);
+	}
+
+	destroy() {
+		this.#root.remove();
+		this.#style.remove();
+		window.removeEventListener('keydown', this.#keydown);
+	}
+
+	#variable(key: string, value: string | undefined = undefined) {
+		const { prefix } = this.#options;
 		return `--${prefix}-${key}${value != null ? ` : ${value};` : ''}`;
 	}
 
-	function toggle(value?: boolean) {
-		state.show = value ?? !state.show;
-	}
-	function keydown(event: KeyboardEvent) {
-		const { ctrlKey, code } = event;
-
-		if (ctrlKey && code === 'KeyM') {
-			toggle();
-		}
-	}
-
-	function insertVariable(variables: Partial<Options>): string {
+	#variables(variables: Partial<Options>): string {
 		let style = '';
 
 		for (const key in variables) {
@@ -75,14 +96,15 @@ export function layoutGridHelper(params: Partial<Params> = {}): LayoutGridHelper
 				const value = variables[key as keyof Options];
 
 				if (typeof value === 'string' || typeof value === 'number') {
-					style += variable(key, value.toString());
+					style += this.#variable(key, value.toString());
 				}
 			}
 		}
 		return style;
 	}
-	function responsive() {
-		const { responsible, mobileFirst, className } = options;
+
+	#responsive() {
+		const { responsible, mobileFirst, className } = this.#options;
 		const keysResponsible = Object.keys(responsible)
 			.map(Number)
 			.sort((a: number, b: number) => {
@@ -96,37 +118,36 @@ export function layoutGridHelper(params: Partial<Params> = {}): LayoutGridHelper
 
 		for (const size of keysResponsible) {
 			style += `
-							@media screen and (${mobileFirst ? 'min-width' : 'max-width'}: ${size}px) {
+							@media (width ${mobileFirst ? '>' : '<'} ${size}px) {
 								.${className} {
-									${insertVariable(responsible[size])}
+									${this.#variables(responsible[size])}
 								}
 							}
 						`;
 		}
 		return style;
 	}
-	function generateStyle(): string {
-		const { className, color } = options;
 
-		const { columns, container, gutter, sides } = options;
+	#render(): string {
+		const { className, color, columns, container, gutter, sides } = this.#options;
 
-		const variables = insertVariable({
+		const variables = this.#variables({
 			columns,
 			container,
 			gutter,
 			sides
 		});
 
-		let columnWidthFormula = `((100% - (var(${variable('gutter')})`;
+		let columnWidthFormula = `((100% - (var(${this.#variable('gutter')})`;
 
-		columnWidthFormula += ` * (var(${variable('columns')}) - 1)))`;
-		columnWidthFormula += ` + var(${variable('sides')}) * 0) / var(${variable('columns')})`;
+		columnWidthFormula += ` * (var(${this.#variable('columns')}) - 1)))`;
+		columnWidthFormula += ` + var(${this.#variable('sides')}) * 0) / var(${this.#variable('columns')})`;
 
 		return `
 				.${className} {
-					${variable('color', color)};
+					${this.#variable('color', color)};
 					${variables}
-					${variable('column-width', `calc(${columnWidthFormula})`)}
+					${this.#variable('column-width', `calc(${columnWidthFormula})`)}
 					display: none;
 					position: fixed;
 					top: 0;
@@ -138,49 +159,18 @@ export function layoutGridHelper(params: Partial<Params> = {}): LayoutGridHelper
 					left: 50%;
 					transform: translateX(-50%);
 					border: 0px solid transparent;
-					border-width: 0px  var(${variable('sides')});
-					max-width: var(${variable('container')});
+					border-width: 0px  var(${this.#variable('sides')});
+					max-width: var(${this.#variable('container')});
 					background-image: repeating-linear-gradient(
 						90deg,
-						var(${variable('color')}) 0,
-						var(${variable('color')}) var(${variable('column-width')}),
-						transparent var(${variable('column-width')}),
-						transparent calc(var(${variable('column-width')}) + var(${variable('gutter')}))
+						var(${this.#variable('color')}) 0,
+						var(${this.#variable('color')}) var(${this.#variable('column-width')}),
+						transparent var(${this.#variable('column-width')}),
+						transparent calc(var(${this.#variable('column-width')}) + var(${this.#variable('gutter')}))
 					);
 				}
 				
-				${responsive()}
+				${this.#responsive()}
 			`;
 	}
-
-	function init() {
-		root.classList.add(options.className);
-		document.body.append(root);
-		styleTag.innerHTML = generateStyle();
-		document.head.append(styleTag);
-		window.addEventListener('keydown', keydown);
-	}
-
-	function destroy() {
-		root.remove();
-		root.remove();
-		window.removeEventListener('keydown', keydown);
-	}
-
-	function api(): LayoutGridHelper {
-		return {
-			get isShow() {
-				return state.show;
-			},
-			show() {
-				toggle(true);
-			},
-			hide() {
-				toggle(false);
-			},
-			destroy
-		};
-	}
-	init();
-	return api();
 }

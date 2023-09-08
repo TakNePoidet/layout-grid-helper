@@ -1,3 +1,4 @@
-import { layoutGridHelper } from './layout-grid-helper';
+import { LayoutGridHelper } from './layout-grid-helper.ts';
 
-export default layoutGridHelper;
+export { type Params as LayoutGridHelperParams } from './layout-grid-helper';
+export default LayoutGridHelper;

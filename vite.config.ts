@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
 import { defineConfig } from 'vite';
-const libraryName = 'layoutGridHelper';
+const libraryName = 'LayoutGridHelper';
 export default defineConfig({
 	plugins: [dts()],
 	build: {

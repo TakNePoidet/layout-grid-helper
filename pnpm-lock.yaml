@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  defu:
+    specifier: ^6.1.2
+    version: 6.1.2
+
 devDependencies:
   '@taknepoidet-config/prettier':
     specifier: ^2.1.0
@@ -1131,6 +1136,11 @@ packages:
       has-property-descriptors: 1.0.0
       object-keys: 1.1.1
     dev: true
+
+  /defu@6.1.2:
+    resolution:
+      { integrity: sha512-+uO4+qr7msjNNWKYPHqN/3+Dx3NFkmIzayk2L1MyZQlvgZb/J1A0fo410dpKrN2SnqFjt8n4JL8fDJE0wIgjFQ== }
+    dev: false
 
   /dir-glob@3.0.1:
     resolution:

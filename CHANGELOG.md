@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v2.0.1
+
+[compare changes](https://github.com/TakNePoidet/layout-grid-helper/compare/v2.0.0...v2.0.1)
+
+### 📖 Documentation
+
+- Fix documentation ([4a9972d](https://github.com/TakNePoidet/layout-grid-helper/commit/4a9972d))
+
+### ❤️ Contributors
+
+- Yakin Nikita ([@TakNePoidet](http://github.com/TakNePoidet))
+
 ## v2.0.0
 
 [compare changes](https://github.com/TakNePoidet/layout-grid-helper/compare/v1.1.0...v2.0.0)

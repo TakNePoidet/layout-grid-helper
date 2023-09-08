@@ -1,5 +1,6 @@
 {
 	"name": "layout-grid-helper",
+	"type": "module",
 	"version": "1.2.1",
 	"description": "Сетка для верстки",
 	"author": "TakNePoidet",

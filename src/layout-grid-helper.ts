@@ -53,7 +53,7 @@ export function layoutGridHelper(params: Partial<Params> = {}): LayoutGridHelper
 	function variable(key: string, value: string | undefined = undefined) {
 		const { prefix } = options;
 
-		return `--${prefix}-${key}${value ? ` : ${value};` : ''}`;
+		return `--${prefix}-${key}${value != null ? ` : ${value};` : ''}`;
 	}
 
 	function toggle(value?: boolean) {

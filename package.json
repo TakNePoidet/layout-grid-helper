@@ -20,11 +20,18 @@
 		"url": "git+https://github.com/TakNePoidet/layout-grid-helper.git"
 	},
 	"devDependencies": {
-		"@taknepoidet-config/eslint-config": "^2.1.4",
 		"@taknepoidet-config/prettier": "^2.1.0",
+		"@typescript-eslint/eslint-plugin": "^6.4.0",
 		"eslint": "^8.48.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-config-standard-with-typescript": "^39.0.0",
+		"eslint-plugin-import": "^2.25.2",
+		"eslint-plugin-n": "^15.0.0",
+		"eslint-plugin-prettier": "^5.0.0",
+		"eslint-plugin-promise": "^6.0.0",
 		"prettier": "^3.0.3",
 		"terser": "^5.19.4",
+		"typescript": "*",
 		"vite": "^4.4.9",
 		"vite-plugin-dts": "^3.5.3"
 	},

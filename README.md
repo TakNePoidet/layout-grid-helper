@@ -6,14 +6,16 @@
 
 ## Установка
 
-```bash
-  npm i layout-grid-helper --save-dev
 ```
-
-или
-
 ```bash
-yarn add -D layout-grid-helper
+# Using pnpm
+pnpm add -D layout-grid-helper
+
+# Using yarn
+yarn add --dev layout-grid-helper
+
+# Using npm
+npm install --save-dev layout-grid-helper
 ```
 
 ## Использование
@@ -21,7 +23,7 @@ yarn add -D layout-grid-helper
 ```js
 import LayoutGridHelper from 'layout-grid-helper';
 
-const gridHelper = LayoutGridHelper({
+const gridHelper = new LayoutGridHelper({
 	prefix: 'gh',
 	sides: '16px',
 	gutter: '16px',
@@ -48,24 +50,24 @@ const gridHelper = LayoutGridHelper({
 ## Опции
 
 | Имя         | Описание                   | Значение по умолчанию                               |
-| ----------- | -------------------------- | --------------------------------------------------- |
+|-------------|----------------------------|-----------------------------------------------------|
 | className   | Класс блока сетки          | layout-grid-helper                                  |
 | prefix      | Префикс переменных         | gh                                                  |
 | mobileFirst | Приоритет мобильной версии | true                                                |
 | color       | Цвет                       | rgb(255 0 0 / 0.2)                                  |
 | gutter      | Отступ между колонками     | 16px                                                |
-| sides       | Отступ от края экрана       | 20px                                                |
-| columns     | Количество колонок           | 4                                                   |
+| sides       | Отступ от края экрана      | 20px                                                |
+| columns     | Количество колонок         | 4                                                   |
 | container   | Ширина контейнера          | 100%                                                |
 | responsible | Медиа запросы              | {[breakpoint]:{gutter?,sides?,columns?,container?}} |
 
 ## Методы
 
-| Имя     | Описание        |
-| ------- | --------------- |
-| show    | Показать сетку  |
-| hide    | Скрыть сетку    |
-| destroy | Удаление сетки  |
+| Имя     | Описание       |
+|---------|----------------|
+| show    | Показать сетку |
+| hide    | Скрыть сетку   |
+| destroy | Удаление сетки |
 
 ## Клавиатура
 
